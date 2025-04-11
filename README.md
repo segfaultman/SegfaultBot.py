@@ -2,7 +2,7 @@
 I started working on a new Discord bot (again)
 
 ## This is a work in progress project I just started
-I'll be updating it with some of the fun ideas I have in mind
+A music bot that uses discord.py and Lavalink. I'll be updating it with some of the fun ideas I have in mind.
 
 ## How to run the bot yourself
 
@@ -12,3 +12,5 @@ I'll be updating it with some of the fun ideas I have in mind
 4. Create a virtual environment for the bot (so you don't accidentally mess up some libs used by the system) - 'pipenv shell'
 5. Install the required libs using pip install -r requirements.txt
 6. Run the bot - 'python bot.py'
+
+Stuff used for the project: discord.py (by Rapptz), Lavalink, Pomice wrapper (by cloudwithax)
