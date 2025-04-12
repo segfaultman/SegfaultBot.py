@@ -1,0 +1,6 @@
+application.yml
+.env
+*.jar
+*.log
+logs/
+Pipfile
