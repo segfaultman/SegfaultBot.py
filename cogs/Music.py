@@ -1,4 +1,5 @@
 import pomice
+from typing import override
 
 from discord.ext import commands
 
@@ -10,9 +11,18 @@ class Music(commands.Cog):
         self.bot = bot
         self.pomice = pomice.NodePool()
 
-    async def start_nodes(self):
-        await self.pomice.create_node(bot=self.bot, host='127.0.0.1', port=2330, password='youshallnotpass', identifier='MAIN')
-        print('Created node.')
+    async def start_nodes(self) -> None:
+        await self.pomice.create_node(bot=self.bot, host='127.0.0.1', port=3030, password='youshallnotpass', identifier='MAIN')
+        print('Created MAIN node')
+
+    @override
+    async def cog_unload(self) -> None:
+        identifiers = list(self.pomice.nodes.keys())
+        print(identifiers)
+        for id in identifiers:
+            print('Disconnecting node: {}'.format(id))
+            await self.pomice.nodes[id].disconnect() # Ensure that we disconnect all nodes on cog reload
+        # Further features like saving the state of players may use that as well
 
     @commands.command(name='connect')
     async def connect(self, ctx: commands.Context):
