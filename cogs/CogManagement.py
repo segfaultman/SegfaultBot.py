@@ -3,13 +3,13 @@ import os
 
 class BotManagement(commands.Cog):
     """
-    These are commands for the bot administrator(s)
+    These are commands for the bot administrator(s) related to extension management
     """
 
     def __init__(self, bot) -> None:
         self.bot: commands.Bot = bot
 
-    @commands.command(name='reload_cog')
+    @commands.command(name='reload_cog', hidden=True)
     async def reload_cog(self, ctx: commands.Context, cog_name: str = None):
         """
         Used to reload any cog. Reloads all cogs if no arguments are given
@@ -35,7 +35,7 @@ class BotManagement(commands.Cog):
         # Any specific cog reload behaviour is defined in an
         # override cog_unload method in the cog itself btw
 
-    @commands.command(name='load_cog')
+    @commands.command(name='load_cog', hidden=True)
     async def load_cog(self, ctx, cog_name: str = None):
         """
         Used to load a new cog. The cog must be in the cogs directory
@@ -58,7 +58,7 @@ class BotManagement(commands.Cog):
         except commands.errors.ExtensionAlreadyLoaded:
             return await ctx.send('The extension is already loaded. Maybe try using `reload_cog`')
         
-    @commands.command(name='unload_cog')
+    @commands.command(name='unload_cog', hidden=True)
     async def unload_cog(self, ctx, cog_name: str = None):
         """
         Used to unload any cog. A valid cog name must be provided.
@@ -78,7 +78,7 @@ class BotManagement(commands.Cog):
         except commands.errors.ExtensionError as err:
             return await ctx.send('Error unloading extension: {}'.format(err))
         
-    @commands.command(name='list_cogs')
+    @commands.command(name='list_cogs', hidden=True)
     async def list_cogs(self, ctx):
         """
         Provides a list of all the currently loaded extensions
