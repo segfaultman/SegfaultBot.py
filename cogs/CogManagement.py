@@ -1,7 +1,7 @@
 from discord.ext import commands
 import os
 
-class BotManagement(commands.Cog):
+class CogManagement(commands.Cog):
     """
     These are commands for the bot administrator(s) related to extension management
     """
@@ -90,4 +90,4 @@ class BotManagement(commands.Cog):
         await ctx.send('List of loaded extensions:\n`{}`'.format(list(self.bot.cogs.keys())))
 
 async def setup(bot):
-    await bot.add_cog(BotManagement(bot))
+    await bot.add_cog(CogManagement(bot))
