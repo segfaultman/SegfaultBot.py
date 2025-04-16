@@ -1,4 +1,5 @@
 import pomice
+import os
 from typing import override
 
 from discord.ext import commands
@@ -12,8 +13,10 @@ class Music(commands.Cog):
         self.pomice = pomice.NodePool()
 
     async def start_nodes(self) -> None:
-        await self.pomice.create_node(bot=self.bot, host='127.0.0.1', port=3030, password='youshallnotpass', identifier='MAIN')
-        print('Created MAIN node')
+        await self.pomice.create_node(bot=self.bot, host=os.getenv('LAVALINK_HOST'),
+                                      port=int(os.getenv('LAVALINK_PORT')),
+                                      password=os.getenv('LAVALINK_PASS'), identifier='MAIN')
+        print('Created MAIN Lavalink node')
 
     @override
     async def cog_unload(self) -> None:
