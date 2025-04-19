@@ -3,4 +3,5 @@ application.yml
 *.jar
 *.log
 logs/
+config.ini
 Pipfile
