@@ -15,10 +15,8 @@ class Bot(commands.Bot):
     def __init__(self) -> None:
         super().__init__(command_prefix=commands.when_mentioned_or(config['BotConfig']['prefix']),
                          intents=bot_intents)
-
-    async def on_ready(self) -> None:
-        print('SegfaultBot is running!')
-
+        
+    async def setup_hook(self) -> None:
         print('Loading cogs...')
 
         cogs = os.listdir('cogs')
@@ -28,6 +26,8 @@ class Bot(commands.Bot):
                 await bot.load_extension('cogs.{}'.format(cog[:-3]))
                 print('Loaded cog: {}'.format(cog))
 
+    async def on_ready(self) -> None:
+        print('SegfaultBot is running!')
 
 bot = Bot()
 bot.run(os.getenv('BOT_TOKEN'))
