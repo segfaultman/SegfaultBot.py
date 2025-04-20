@@ -1,5 +1,8 @@
-from discord.ext import commands
+import logging
 import os
+from discord.ext import commands
+
+logger = logging.getLogger('discord')
 
 class CogManagement(commands.Cog):
     """
@@ -23,13 +26,13 @@ class CogManagement(commands.Cog):
                 await self.bot.reload_extension('cogs.{}'.format(cog_name))
                 return await ctx.send('Successfully reloaded extension: `{}`'.format(cog_name))
             except commands.errors.ExtensionNotLoaded:
-                return print('The specified cog was not loaded')
+                return await ctx.send('The specified cog was not loaded')
             except commands.errors.ExtensionError as err:
                 return await ctx.send('Error reloading extension: `{}`'.format(err))
 
         for cog in self.bot.cogs:
             await self.bot.reload_extension('cogs.{}'.format(cog))
-            print('Reloaded extension: {}'.format(cog))
+            logger.info('Reloaded extension: {}'.format(cog))
 
         # TODO: Error checking?
         # Any specific cog reload behaviour is defined in an

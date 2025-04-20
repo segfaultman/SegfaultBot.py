@@ -1,8 +1,11 @@
 import pomice
 import os
-from typing import override
+import logging
 
+from typing      import override
 from discord.ext import commands
+
+logger = logging.getLogger('discord')
 
 class Music(commands.Cog):
     """
@@ -27,7 +30,7 @@ class Music(commands.Cog):
             identifier='MAIN'
         )
 
-        print('Created MAIN Lavalink node')
+        logger.info('Created MAIN Lavalink node')
     
     @override
     async def cog_unload(self) -> None:
@@ -38,7 +41,7 @@ class Music(commands.Cog):
         # Future features like saving the state of players
         # may use that as well
         for id in identifiers:
-            print('Disconnecting node: {}'.format(id))
+            logger.info('Disconnecting node: {}'.format(id))
             await self.pomice.nodes[id].disconnect()
 
     @commands.command(name='connect')
