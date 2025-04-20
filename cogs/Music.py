@@ -9,35 +9,44 @@ class Music(commands.Cog):
     These are the bot's music commands
     """
     def __init__(self, bot) -> None:
-        self.bot = bot
+        self.bot: commands.Bot = bot
         self.pomice = pomice.NodePool()
 
-    async def start_main_node(self) -> None:
-        await self.pomice.create_node(bot=self.bot, host=os.getenv('LAVALINK_HOST'),
-                                      port=int(os.getenv('LAVALINK_PORT')),
-                                      password=os.getenv('LAVALINK_PASS'), identifier='MAIN')
-        print('Created MAIN Lavalink node')
+        bot.loop.create_task(self.start_main_node())
 
-    @override
-    async def cog_load(self) -> None:
-        await self.start_main_node()
+
+    async def start_main_node(self) -> None:
+
+        await self.bot.wait_until_ready()
+
+        await self.pomice.create_node(
+            bot=self.bot,
+            host=os.getenv('LAVALINK_HOST'),
+            port=int(os.getenv('LAVALINK_PORT')),
+            password=os.getenv('LAVALINK_PASS'),
+            identifier='MAIN'
+        )
+
+        print('Created MAIN Lavalink node')
     
     @override
     async def cog_unload(self) -> None:
+
         identifiers = list(self.pomice.nodes.keys())
+
+        # Ensure that we disconnect all nodes on cog reload
+        # Future features like saving the state of players
+        # may use that as well
         for id in identifiers:
             print('Disconnecting node: {}'.format(id))
-            await self.pomice.nodes[id].disconnect() # Ensure that we disconnect all nodes on cog reload
-        # Future features like saving the state of players may use that as well
-
-    async def get_player(self, ctx: commands.Context) -> pomice.Player:
-        pass
+            await self.pomice.nodes[id].disconnect()
 
     @commands.command(name='connect')
     async def connect(self, ctx: commands.Context):
         """
         Connects the bot to your current channel
         """
+
         channel = getattr(ctx.author.voice, 'channel', None)
         if not channel:
             return await ctx.send('You need to be connected to a VC')
@@ -71,7 +80,10 @@ class Music(commands.Cog):
 
         player = ctx.voice_client
 
-        results = await player.get_tracks(query='{}'.format(song), search_type=pomice.enums.SearchType.scsearch)
+        results = await player.get_tracks(
+            query='{}'.format(song),
+            search_type=pomice.enums.SearchType.scsearch
+        )
 
         if not results:
             return await ctx.send('Could not find any song matching that title')
@@ -144,5 +156,5 @@ class Music(commands.Cog):
         await ctx.send('The player is resumed')
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Music(bot))
